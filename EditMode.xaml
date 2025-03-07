@@ -1,0 +1,20 @@
+﻿<Window x:Class="SoftphoneKiosk.EditMode"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ניהול שלוחות" Height="500" Width="400"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBlock Text="ניהול שלוחות" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+            <ScrollViewer Height="350" Width="350">
+                <StackPanel x:Name="ButtonListPanel" />
+            </ScrollViewer>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Button Content="➕ הוסף שלוחה" Width="150" Height="40" Click="AddButton_Click" Margin="5"/>
+                <Button Content="💾 שמור" Width="100" Height="40" Click="SaveButton_Click" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

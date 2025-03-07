@@ -1,0 +1,56 @@
+﻿<Window x:Class="SoftphoneKiosk.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="מערכת כריזה" WindowState="Maximized" WindowStyle="None" ResizeMode="NoResize" Background="black">
+    <Grid>
+        <!-- תמונת רקע -->
+        <Image x:Name="BackgroundImage" Stretch="Fill" Panel.ZIndex="-1"/>
+
+        <!-- לוגו הלקוח בצד שמאל -->
+        <Image x:Name="ClientLogo" Width="150" Height="150" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20" MouseDown="ChangeClientLogo"/>
+
+        <!-- לוגו החברה בצד ימין - משמש ככפתור לעריכת כפתורים ולהחלפת לוגו -->
+        <Image x:Name="CompanyLogo" Width="150" Height="150" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="20" MouseDown="ChangeCompanyLogo"/>
+
+        <!-- כותרת ושעון למעלה -->
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <!-- שעון בראש המסך -->
+            <TextBlock x:Name="Clock" FontSize="48" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="10"/>
+
+            <!-- כותרת המערכת מתחת לשעון -->
+            <TextBlock Text="📢 מערכת כריזה" FontSize="42" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,5,0,20"/>
+        </StackPanel>
+
+        <!-- כפתורים דינאמיים -->
+        <Grid x:Name="ButtonGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 12 כפתורים פרוסים יפה על המסך -->
+            <Button Content="כפתור 1" Grid.Row="0" Grid.Column="0" Width="200" Height="100" FontSize="24"/>
+            <Button Content="כפתור 2" Grid.Row="0" Grid.Column="1" Width="200" Height="100" FontSize="24"/>
+            <Button Content="כפתור 3" Grid.Row="0" Grid.Column="2" Width="200" Height="100" FontSize="24"/>
+            <Button Content="כפתור 4" Grid.Row="1" Grid.Column="0" Width="200" Height="100" FontSize="24"/>
+            <Button Content="כפתור 5" Grid.Row="1" Grid.Column="1" Width="200" Height="100" FontSize="24"/>
+            <Button Content="כפתור 6" Grid.Row="1" Grid.Column="2" Width="200" Height="100" FontSize="24"/>
+            <Button Content="כפתור 7" Grid.Row="2" Grid.Column="0" Width="200" Height="100" FontSize="24"/>
+            <Button Content="כפתור 8" Grid.Row="2" Grid.Column="1" Width="200" Height="100" FontSize="24"/>
+            <Button Content="כפתור 9" Grid.Row="2" Grid.Column="2" Width="200" Height="100" FontSize="24"/>
+            <Button Content="כפתור 10" Grid.Row="3" Grid.Column="0" Width="200" Height="100" FontSize="24"/>
+            <Button Content="כפתור 11" Grid.Row="3" Grid.Column="1" Width="200" Height="100" FontSize="24"/>
+            <Button Content="כפתור 12" Grid.Row="3" Grid.Column="2" Width="200" Height="100" FontSize="24"/>
+        </Grid>
+
+        <!-- כפתור לפתיחת רשימת השלוחות בתחתית המסך בצד שמאל -->
+        <Button Content="📋 רשימת שלוחות מלאה" Width="300" Height="80" Click="OpenFullList" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30"/>
+    </Grid>
+</Window>
