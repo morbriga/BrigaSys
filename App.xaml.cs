@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace SoftphoneKiosk;
+namespace BrigaSys;
 
 /// <summary>
 /// Interaction logic for App.xaml

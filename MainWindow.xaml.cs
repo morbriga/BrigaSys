@@ -8,16 +8,22 @@ using System.Windows.Media.Imaging;
 using System.Collections.Generic;
 using System.Windows.Input;
 using Microsoft.Win32;
+using System.Windows.Media;
+using System.Windows.Threading;
+using Microsoft.VisualBasic;
+using BrigaSys;
+using System.Windows.Media.Animation;
 
-namespace SoftphoneKiosk
+namespace BrigaSys
 {
     public partial class MainWindow : Window
     {
         private CallHandler callHandler;
-        private string configPath = Path.Combine("C:\\SoftphoneKiosk", "config.csv");
-        private string passwordPath = Path.Combine("C:\\SoftphoneKiosk", "admin_password.txt");
-        private string companyLogoPath = Path.Combine("C:\\SoftphoneKiosk", "company_logo.png");
-        private string clientLogoPath = Path.Combine("C:\\SoftphoneKiosk", "client_logo.png");
+        private string configPath = Path.Combine("C:\\BrigaSys", "config.csv");
+        private string passwordPath = Path.Combine("C:\\BrigaSys", "admin_password.txt");
+        private string companyLogoPath = Path.Combine("C:\\BrigaSys", "company_logo.png");
+        private string clientLogoPath = Path.Combine("C:\\BrigaSys", "client_logo.png");
+        private string titlePath = Path.Combine("C:\\BrigaSys", "title.txt");
 
         public MainWindow()
         {
@@ -26,7 +32,22 @@ namespace SoftphoneKiosk
             EnsureConfigFilesExist();
             LoadButtons();
             LoadImages();
+            LoadTitle();
             this.PreviewMouseRightButtonDown += OpenEditMode;
+            InitializeClock();
+        }
+
+        private void InitializeClock()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Clock_Tick;
+            timer.Start();
+        }
+
+        private void Clock_Tick(object sender, EventArgs e)
+        {
+            Clock.Text = DateTime.Now.ToString("HH:mm:ss");
         }
 
         private void EnsureConfigFilesExist()
@@ -39,19 +60,16 @@ namespace SoftphoneKiosk
             {
                 File.WriteAllText(passwordPath, "1234", Encoding.UTF8); // סיסמת ברירת מחדל
             }
+            if (!File.Exists(titlePath))
+            {
+                File.WriteAllText(titlePath, "מערכת כריזה");
+            }
         }
 
-        private void LoadButtons()
+        public void LoadButtons()
         {
             List<ButtonData> extensions = LoadExtensionsFromFile();
             ButtonGrid.Children.Clear();
-            ButtonGrid.RowDefinitions.Clear();
-            ButtonGrid.ColumnDefinitions.Clear();
-
-            for (int i = 0; i < 4; i++)
-                ButtonGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            for (int i = 0; i < 3; i++)
-                ButtonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
             int row = 0, col = 0;
 
@@ -60,12 +78,30 @@ namespace SoftphoneKiosk
                 Button btn = new Button
                 {
                     Content = extension.Name,
-                    Width = 180,
-                    Height = 50,
-                    Margin = new Thickness(5),
-                    Tag = extension.Number
+                    Width = 200,
+                    Height = 100,
+                    Margin = new Thickness(10),
+                    Tag = extension.Number,
+                    Background = new SolidColorBrush(Colors.Gold),
+                    Foreground = new SolidColorBrush(Colors.Black),
+                    FontSize = 24,
+                    FontWeight = FontWeights.Bold
                 };
+
                 btn.Click += DialNumber;
+
+                ControlTemplate template = new ControlTemplate(typeof(Button));
+                FrameworkElementFactory border = new FrameworkElementFactory(typeof(Border));
+                border.SetValue(Border.BackgroundProperty, new TemplateBindingExtension(Button.BackgroundProperty));
+                border.SetValue(Border.BorderBrushProperty, Brushes.Black);
+                border.SetValue(Border.BorderThicknessProperty, new Thickness(2));
+                border.SetValue(Border.CornerRadiusProperty, new CornerRadius(10));
+                FrameworkElementFactory contentPresenter = new FrameworkElementFactory(typeof(ContentPresenter));
+                contentPresenter.SetValue(ContentPresenter.HorizontalAlignmentProperty, HorizontalAlignment.Center);
+                contentPresenter.SetValue(ContentPresenter.VerticalAlignmentProperty, VerticalAlignment.Center);
+                border.AppendChild(contentPresenter);
+                template.VisualTree = border;
+                btn.Template = template;
 
                 Grid.SetRow(btn, row);
                 Grid.SetColumn(btn, col);
@@ -80,13 +116,13 @@ namespace SoftphoneKiosk
             }
         }
 
-        private void LoadImages()
+        public void LoadImages()
         {
-            LoadImage(companyLogoPath, CompanyLogo);
-            LoadImage(clientLogoPath, ClientLogo);
+            LoadImage(companyLogoPath, CompanyLogoPlaceholder);
+            LoadImage(clientLogoPath, ClientLogoPlaceholder);
         }
 
-        private void LoadImage(string path, Image imageControl)
+        private void LoadImage(string path, Border placeholder)
         {
             if (File.Exists(path))
             {
@@ -95,31 +131,18 @@ namespace SoftphoneKiosk
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.UriSource = new Uri(Path.GetFullPath(path), UriKind.Absolute);
                 bitmap.EndInit();
-                imageControl.Source = bitmap;
+
+                ImageBrush brush = new ImageBrush(bitmap);
+                brush.Stretch = Stretch.Uniform;
+                placeholder.Background = brush;
             }
         }
 
-        private void ChangeCompanyLogo(object sender, RoutedEventArgs e)
+        public void LoadTitle()
         {
-            ChangeImage(companyLogoPath);
-        }
-
-        private void ChangeClientLogo(object sender, RoutedEventArgs e)
-        {
-            ChangeImage(clientLogoPath);
-        }
-
-        private void ChangeImage(string path)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            if (File.Exists(titlePath))
             {
-                Filter = "Images (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg"
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                File.Copy(openFileDialog.FileName, path, true);
-                LoadImages();
+                TitleTextBlock.Text = File.ReadAllText(titlePath);
             }
         }
 
@@ -149,7 +172,9 @@ namespace SoftphoneKiosk
                 {
                     callHandler = new CallHandler();
                 }
-                callHandler.DialNumber(extension);
+                string targetName = button.Content.ToString();
+                CallWindow callWindow = new CallWindow(targetName, callHandler, extension);
+                callWindow.Show();
             }
         }
 
@@ -162,21 +187,9 @@ namespace SoftphoneKiosk
 
         private void OpenEditMode(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true; // מונע העברת האירוע הלאה
-            string storedPassword = File.ReadAllText(passwordPath).Trim();
-            string enteredPassword = Microsoft.VisualBasic.Interaction.InputBox("הזן סיסמה:", "כניסה לניהול", "");
-
-            if (enteredPassword == storedPassword)
-            {
-                EditMode editWindow = new EditMode();
-                editWindow.ShowDialog();
-                LoadButtons();
-                LoadImages(); // טען מחדש את התמונות
-            }
-            else
-            {
-                MessageBox.Show("סיסמה שגויה!", "שגיאה", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            e.Handled = true;
+            LoginWindow loginWindow = new LoginWindow(this);
+            loginWindow.ShowDialog();
         }
     }
 }
