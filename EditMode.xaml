@@ -1,44 +1,28 @@
-<Window x:Class="BrigaSys.CallWindow"
+<Window x:Class="BrigaSys.EditMode"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="BrigaSys" Height="250" Width="350"
-        WindowStartupLocation="CenterScreen"
-        WindowStyle="None" ResizeMode="NoResize" Topmost="True"
-        Background="Black" Foreground="Gold" FlowDirection="LeftToRight">
-    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        Title="ניהול שלוחות" Height="700" Width="400"
+		Icon="BrigaSys.png"
+        WindowStartupLocation="CenterScreen">
+	<Grid>
+		<StackPanel Margin="10">
+			<TextBlock Text="ניהול שלוחות" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
 
-            <TextBlock x:Name="CallTarget" Text="Broadcasting to: " FontSize="20" FontWeight="Bold" Margin="10" Grid.Row="0" HorizontalAlignment="Center"/>
-            <TextBlock x:Name="CallTimer" Text="00:00" FontSize="18" Margin="10" Grid.Row="1" HorizontalAlignment="Center"/>
-            <Button Content="End Call" Width="180" Height="50" Click="EndCall" Grid.Row="2" HorizontalAlignment="Center" Margin="10">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Background" Value="Gold"/>
-                        <Setter Property="Foreground" Value="Black"/>
-                        <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="FontSize" Value="16"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FFD700"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-        </Grid>
-    </Grid>
+			<TextBlock Text="כותרת:" Margin="0,5,0,0"/>
+			<TextBox x:Name="TitleTextBox" Margin="0,5,0,10"/>
+
+			<ScrollViewer Height="350" Width="350">
+				<StackPanel x:Name="ButtonListPanel" />
+			</ScrollViewer>
+
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+				<Button Content="➕ הוסף שלוחה" Width="150" Height="40" Click="AddButton_Click" Margin="5"/>
+				<Button Content=" שמור" Width="100" Height="40" Click="SaveButton_Click" Margin="5"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+				<Button Content="החלף לוגו חברה" Width="150" Height="40" Click="ChangeCompanyLogo_Click" Margin="5" />
+				<Button Content="החלף לוגו לקוח" Width="150" Height="40" Click="ChangeClientLogo_Click" Margin="5" />
+			</StackPanel>
+		</StackPanel>
+	</Grid>
 </Window>

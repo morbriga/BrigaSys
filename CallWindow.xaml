@@ -4,6 +4,7 @@
         Title="Active Call" Height="250" Width="350"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" ResizeMode="NoResize" Topmost="True"
+		Icon="BrigaSys.png"
         Background="Black" Foreground="Gold" FlowDirection="RightToLeft">
     <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
         <Grid>
@@ -13,9 +14,9 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock x:Name="CallTarget" Text="משדר כריזה אל: " FontSize="20" FontWeight="Bold" Margin="10" Grid.Row="0" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="CallTarget" Text="Call To:" FontSize="20" FontWeight="Bold" Margin="10" Grid.Row="0" HorizontalAlignment="Center"/>
             <TextBlock x:Name="CallTimer" Text="00:00" FontSize="18" Margin="10" Grid.Row="1" HorizontalAlignment="Center"/>
-            <Button Content="סיים שיחה" Width="180" Height="50" Click="EndCall" Grid.Row="2" HorizontalAlignment="Center" Margin="10">
+            <Button Content="End Call" Width="180" Height="50" Click="EndCall" Grid.Row="2" HorizontalAlignment="Center" Margin="10">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="Gold"/>

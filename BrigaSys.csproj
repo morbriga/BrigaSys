@@ -6,10 +6,25 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>brigasys.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="brigasys.ico" />
+    <None Remove="BrigaSys.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="brigasys.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="brigasys.ico" />
+    <Resource Include="BrigaSys.png" />
   </ItemGroup>
 
 </Project>

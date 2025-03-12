@@ -1,6 +1,7 @@
 ﻿<Window x:Class="BrigaSys.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Icon="/BrigaSys.png"
         Title="BrigaSys" WindowState="Maximized" WindowStyle="None" ResizeMode="NoResize" Background="Black">
     <Grid>
         <Grid.Background>
